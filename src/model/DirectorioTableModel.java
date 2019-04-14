@@ -1,10 +1,15 @@
 package model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
 
+import DAO.DAOEntrada;
+import DAO.DAOSalida;
+import DAO.XMLimport;
 import UI.PersonaDialog;
 
 public class DirectorioTableModel extends AbstractTableModel{
@@ -72,22 +77,40 @@ public class DirectorioTableModel extends AbstractTableModel{
 	 * Metodos 
 	 */
 	public void agregarPersona(Persona p) {
+		int codigo  = this.obUltimoCod()+1;
+		p.setCodigo(codigo);
+		this.dir.add(p);
+	}
+	
+	/**
+	 * agregar persona en una posicion determinada
+	 */
+	
+	public void agregarPersona(Persona p, int codigo) {
+		p.setCodigo(codigo);
 		this.dir.add(p);
 	}
 	
 	/**
 	 * agrega una persona en una posicion determinada 
 	 */
-	public void agregarPersona(int Cod, String nom, int edad, String direc, int cPos, String pobl, String prov) {
-		dir.add(new Persona(Cod, nom, edad, direc, cPos, pobl, prov));
+	public void agregarPersona(int cod,String nom, int edad, String direc, String cPos, String pobl, String prov) {
+		dir.add(new Persona(cod, nom, edad, direc, cPos, pobl, prov));
 	}
 	
 	/**
 	 * Hay que autoasignarle un codigo de persona 
 	 */
-	public void agregarPersona(String nom, int edad, String direc, int cPos, String pobl, String prov) {
+	public void agregarPersona(String nom, int edad, String direc, String cPos, String pobl, String prov) {
 		int codigo = this.obUltimoCod() + 1;
 		dir.add(new Persona(codigo, nom, edad, direc, cPos, pobl, prov));
+	}
+	
+	private void agregarPersonas(ArrayList<Persona> personas) {
+		for (Persona p : personas) {
+			this.agregarPersona(p);
+		}
+		this.fireTableDataChanged();
 	}
 	
 	public void quitarPersona(Persona p) {
@@ -96,6 +119,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 				dir.remove(i);
 			}
 		}
+		this.fireTableDataChanged();
 	}
 	
 	/**
@@ -128,6 +152,20 @@ public class DirectorioTableModel extends AbstractTableModel{
 				 */
 			}
 		}
+	}
+
+	public void getData(File fichero) throws IOException{
+		this.dir = DAOEntrada.getDatosDeFichero(fichero);
+	}
+
+	public void importarXML(File XMLFile) {
+		ArrayList<Persona> personas = XMLimport.importarXML(XMLFile);
+		this.agregarPersonas(personas);
+	}
+
+	public void guardaEnFichero(File fichero) throws IOException {
+		// TODO Auto-generated method stub
+		DAOSalida.guardaEnFichero(dir, fichero);
 	}
 	
 }

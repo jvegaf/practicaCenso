@@ -1,26 +1,23 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
+import model.Directorio;
 import model.DirectorioTableModel;
-import model.TipoOpcion;
 import model.Persona;
-import javax.swing.JButton;
 
 public class PersonaDialog extends JDialog {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5547429223011237733L;
 	private JTextField textFieldCodigo;
 	private JTextField textFieldNombre;
 	private JTextField textFieldEdad;
@@ -32,22 +29,80 @@ public class PersonaDialog extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 * @param opcion 
 	 * @param dir 
 	 */
-	@SuppressWarnings("incomplete-switch")
-	public PersonaDialog(DirectorioTableModel dtm, TipoOpcion opcion) {
+	public PersonaDialog(DirectorioTableModel dtm) {
 		this.dtm = dtm;
 		setBounds(300, 300, 569, 300);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		{
 			JPanel panel = new JPanel();
+			getContentPane().add(panel, BorderLayout.EAST);
+			panel.setLayout(new GridLayout(0, 1, 0, 0));
+			{
+				JButton btnAlta = new JButton("Alta");
+				btnAlta.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						agregarPersona(dtm, textFieldNombre.getText(), textFieldEdad.getText(), textFieldDireccion.getText(), textFieldCPostal.getText(),textFieldPoblacion.getText(), textFieldProvincia.getText());
+					}
+				});
+				panel.add(btnAlta);
+			}
+			{
+				JButton btnBaja = new JButton("Baja");
+				panel.add(btnBaja);
+			}
+			{
+				JButton btnBuscar = new JButton("Buscar");
+				btnBuscar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						buscar();
+					}
+				});
+				panel.add(btnBuscar);
+			}
+			{
+				JButton btnLimpiar = new JButton("Limpiar");
+				btnLimpiar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						limpiaFormulario();
+					}
+				});
+				panel.add(btnLimpiar);
+			}
+			{
+				JButton btnModificar = new JButton("Modificar");
+				panel.add(btnModificar);
+			}
+		}
+		{
+			JPanel panel = new JPanel();
+			getContentPane().add(panel, BorderLayout.SOUTH);
+			panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			{
+				JButton button = new JButton("|<");
+				panel.add(button);
+			}
+			{
+				JButton button = new JButton("<");
+				panel.add(button);
+			}
+			{
+				JButton button = new JButton(">");
+				panel.add(button);
+			}
+			{
+				JButton button = new JButton(">|");
+				panel.add(button);
+			}
+		}
+		{
+			JPanel panel = new JPanel();
 			getContentPane().add(panel, BorderLayout.CENTER);
 			panel.setLayout(new GridLayout(0, 2, 0, 0));
 			{
 				JLabel lblCodigo = new JLabel("Codigo");
-				lblCodigo.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblCodigo);
 			}
 			{
@@ -57,7 +112,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblNombre = new JLabel("Nombre");
-				lblNombre.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblNombre);
 			}
 			{
@@ -67,7 +121,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblEdad = new JLabel("Edad");
-				lblEdad.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblEdad);
 			}
 			{
@@ -77,7 +130,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblDireccion = new JLabel("Direccion");
-				lblDireccion.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblDireccion);
 			}
 			{
@@ -87,7 +139,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblCodigoPostal = new JLabel("Codigo Postal");
-				lblCodigoPostal.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblCodigoPostal);
 			}
 			{
@@ -97,7 +148,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblPoblacin = new JLabel("Población");
-				lblPoblacin.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblPoblacin);
 			}
 			{
@@ -107,7 +157,6 @@ public class PersonaDialog extends JDialog {
 			}
 			{
 				JLabel lblProvincia = new JLabel("Provincia");
-				lblProvincia.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblProvincia);
 			}
 			{
@@ -115,44 +164,9 @@ public class PersonaDialog extends JDialog {
 				textFieldProvincia.setColumns(10);
 				panel.add(textFieldProvincia);
 			}
-			{
-				JButton btnCancelar = new JButton("Cancelar");
-				btnCancelar.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						setVisible(false);
-					}
-				});
-				panel.add(btnCancelar);
-			}
-			{
-				JButton btnAceptar = new JButton("Aceptar");
-				btnAceptar.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						agregarPersona();
-					}
-				});
-				panel.add(btnAceptar);
-			}
-			switch (opcion) {
-				case AGREGAR:
-					textFieldCodigo.setEnabled(false);
-					break;
-			}
 		}
 	}
 	
-	protected void agregarPersona() {
-		dtm.agregarPersona(textFieldNombre.getText(), Integer.valueOf(textFieldEdad.getText()), 
-				textFieldDireccion.getText(), textFieldCPostal.getText(), 
-				textFieldPoblacion.getText(), textFieldProvincia.getText());
-		dtm.fireTableDataChanged();
-		this.setVisible(false);
-	}
-
 	private void limpiaFormulario() {
 		textFieldCodigo.setText("");
 		textFieldDireccion.setText("");
@@ -161,6 +175,28 @@ public class PersonaDialog extends JDialog {
 		textFieldPoblacion.setText("");
 		textFieldProvincia.setText("");
 	}
+	
+	private void agregarPersona(DirectorioTableModel dtm, String nom, String edad, String dir, String codPos, String pob, String prov) {
+		int ed = Integer.parseInt(edad);
+		int cp = Integer.parseInt(codPos);
+		dtm.agregarPersona(nom, ed, dir, cp, pob, prov);
+		dtm.fireTableDataChanged();
+		this.dispose();
+	}
+
+	private void buscar(){
+		HashMap<String, String> datos = new HashMap<>();
+		
+		datos.put("codigo", textFieldCodigo.getText());
+		datos.put("nombre", textFieldNombre.getText());
+		datos.put("edad", textFieldEdad.getText());
+		datos.put("direccion", textFieldDireccion.getText());
+		datos.put("codigoPostal", textFieldCPostal.getText());
+		datos.put("poblacion", textFieldPoblacion.getText());
+		datos.put("provincia", textFieldProvincia.getText());
+	
+		dtm.busca(datos);
+	}
 
 	public void showPersona(Persona p) {
 		limpiaFormulario();
@@ -168,9 +204,8 @@ public class PersonaDialog extends JDialog {
 		textFieldNombre.setText(p.getNombre());
 		textFieldEdad.setText(String.valueOf(p.getEdad()));
 		textFieldDireccion.setText(p.getDireccion());
-		textFieldCPostal.setText(p.getCodigoPostal());
+		textFieldCPostal.setText(String.valueOf(p.getCodigoPostal()));
 		textFieldPoblacion.setText(p.getPoblacion());
 		textFieldProvincia.setText(p.getProvincia());
-		
 	}
 }
