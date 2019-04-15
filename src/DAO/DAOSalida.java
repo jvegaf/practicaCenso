@@ -12,7 +12,7 @@ public class DAOSalida {
 	public static void guardaEnFichero(ArrayList<Persona> dir, File fichero) throws IOException {
 		/**
 		 * FixedOutputStream es una herencia propia 
-		 * para solucionar un pequeño problemilla
+		 * para solucionar un pequeï¿½o problemilla
 		 */
 		FixedObjectOutputStream oos = new FixedObjectOutputStream(new FileOutputStream(fichero));
 		for(Persona p : dir) {

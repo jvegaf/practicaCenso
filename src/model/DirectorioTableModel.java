@@ -80,6 +80,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 		int codigo  = this.obUltimoCod()+1;
 		p.setCodigo(codigo);
 		this.dir.add(p);
+		this.fireTableDataChanged();
 	}
 	
 	/**
@@ -113,6 +114,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 		for (Persona p : personas) {
 			this.agregarPersona(p);
 		}
+		this.fireTableDataChanged();
 	}
 	
 	public void quitarPersona(Persona p) {

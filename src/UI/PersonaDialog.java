@@ -149,7 +149,7 @@ public class PersonaDialog extends JDialog {
 		dtm.agregarPersona(textFieldNombre.getText(), Integer.valueOf(textFieldEdad.getText()), 
 				textFieldDireccion.getText(), textFieldCPostal.getText(), 
 				textFieldPoblacion.getText(), textFieldProvincia.getText());
-		dtm.fireTableDataChanged();
+		/* dtm.fireTableDataChanged(); */
 		this.setVisible(false);
 	}
 
