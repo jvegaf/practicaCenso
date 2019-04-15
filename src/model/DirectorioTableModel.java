@@ -64,11 +64,11 @@ public class DirectorioTableModel extends AbstractTableModel{
 		case 3:
 			return p.getDireccion();
 		case 4:
-			return p.getPoblacion();
-		case 5:
-			return p.getProvincia();
-		case 6:
 			return p.getCodigoPostal();
+		case 5:
+			return p.getPoblacion();
+		case 6:
+			return p.getProvincia();
 		}
 		return "";
 	}
@@ -89,6 +89,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 	public void agregarPersona(Persona p, int codigo) {
 		p.setCodigo(codigo);
 		this.dir.add(p);
+		this.fireTableDataChanged();
 	}
 	
 	/**
@@ -96,6 +97,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 	 */
 	public void agregarPersona(int cod,String nom, int edad, String direc, String cPos, String pobl, String prov) {
 		dir.add(new Persona(cod, nom, edad, direc, cPos, pobl, prov));
+		this.fireTableDataChanged();
 	}
 	
 	/**
@@ -104,13 +106,13 @@ public class DirectorioTableModel extends AbstractTableModel{
 	public void agregarPersona(String nom, int edad, String direc, String cPos, String pobl, String prov) {
 		int codigo = this.obUltimoCod() + 1;
 		dir.add(new Persona(codigo, nom, edad, direc, cPos, pobl, prov));
+		this.fireTableDataChanged();
 	}
 	
 	private void agregarPersonas(ArrayList<Persona> personas) {
 		for (Persona p : personas) {
 			this.agregarPersona(p);
 		}
-		this.fireTableDataChanged();
 	}
 	
 	public void quitarPersona(Persona p) {
