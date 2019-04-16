@@ -1,29 +1,24 @@
 package UI;
 
+import java.awt.BorderLayout;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
-import model.Directorio;
 import model.DirectorioTableModel;
 import model.TipoOpcion;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.BorderLayout;
 
 public class CensoFrame extends JFrame {
 
@@ -52,7 +47,6 @@ public class CensoFrame extends JFrame {
 	private JMenuItem mntmBorrar;
 	private JMenuItem mntmAbrirReciente;
 	private JMenuItem mntmSalir;
-	private JPanel panel;
 	
 
 	/**
@@ -138,6 +132,13 @@ public class CensoFrame extends JFrame {
 		mnExportar.add(mntmExportarCsv);
 		
 		mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		mnArchivo.add(mntmSalir);
 		
 		mnEditar = new JMenu("Editar");
