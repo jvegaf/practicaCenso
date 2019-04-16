@@ -23,6 +23,7 @@ import model.TipoOpcion;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.BorderLayout;
 
 public class CensoFrame extends JFrame {
 
@@ -51,6 +52,7 @@ public class CensoFrame extends JFrame {
 	private JMenuItem mntmBorrar;
 	private JMenuItem mntmAbrirReciente;
 	private JMenuItem mntmSalir;
+	private JPanel panel;
 	
 
 	/**
@@ -165,16 +167,15 @@ public class CensoFrame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
 		dtm = new DirectorioTableModel();
+		
+		
 		tabla = new JTable(dtm);
 		tabla.setBorder(null);
-		
-		
 		scrollPane = new JScrollPane(tabla);
-		scrollPane.setBounds(0, 0, 800, 606);
-		contentPane.add(scrollPane);
+		contentPane.add(scrollPane, BorderLayout.CENTER);
 	}
 
 
@@ -208,6 +209,4 @@ public class CensoFrame extends JFrame {
 	protected void getData(File fichero) throws IOException {		
 		dtm.getData(fichero);
 	}
-	
-	
 }
