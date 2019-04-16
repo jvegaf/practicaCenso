@@ -1,5 +1,6 @@
 package DAO;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,8 +25,6 @@ public class DAOEntrada extends DAOGeneral{
 			directorio.add(p);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}finally {
-			ois.close();
 		}
 		while(p!=null) {
 			try {
@@ -33,8 +32,8 @@ public class DAOEntrada extends DAOGeneral{
 				directorio.add(p);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}finally {
-				ois.close();
+			} catch (EOFException e) {
+				return directorio;
 			}
 		}
 		ois.close();

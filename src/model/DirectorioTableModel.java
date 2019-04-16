@@ -160,6 +160,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 
 	public void getData(File fichero) throws IOException{
 		this.dir = DAOEntrada.getDatosDeFichero(fichero);
+		this.fireTableDataChanged();
 	}
 
 	public void importarXML(File XMLFile) {
