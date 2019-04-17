@@ -6,11 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import DAO.DAOEntrada;
 import DAO.DAOSalida;
 import DAO.XMLimport;
 import UI.PersonaDialog;
+import Utils.RecentFile;
+import Utils.RecentsFileUtil;
 
 public class DirectorioTableModel extends AbstractTableModel{
 	
@@ -18,6 +23,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 	private ArrayList<Persona> dir = new ArrayList<Persona>();
 	private String[] columns = { "Codigo", "Nombre", "Edad", "Direccion", "Codigo Postal", "Poblacion", "Provincia"}; 
 	private PersonaDialog pDialog;
+	
 	/**
 	 * getter 
 	 */
@@ -158,8 +164,12 @@ public class DirectorioTableModel extends AbstractTableModel{
 		}
 	}
 
-	public void getData(File fichero) throws IOException{
+	public void getDataDeFichero(File fichero) throws IOException{
 		this.dir = DAOEntrada.getDatosDeFichero(fichero);
+		if(this.dir != null && this.dir.size() > 0) {
+			
+			this.agregarFicheroReciente(fichero);
+		}
 		this.fireTableDataChanged();
 	}
 
@@ -171,6 +181,16 @@ public class DirectorioTableModel extends AbstractTableModel{
 	public void guardaEnFichero(File fichero) throws IOException {
 		// TODO Auto-generated method stub
 		DAOSalida.guardaEnFichero(dir, fichero);
+	}
+	
+	private void agregarFicheroReciente(File fichero) {
+		RecentFile file = new RecentFile(fichero.getName(), fichero.getAbsolutePath());
+		try {
+			RecentsFileUtil.agregarFicheroReciente(file);
+		} catch (ParserConfigurationException | TransformerFactoryConfigurationError | TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
