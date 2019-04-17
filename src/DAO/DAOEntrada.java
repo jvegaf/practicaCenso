@@ -18,6 +18,7 @@ public class DAOEntrada extends DAOGeneral{
 
 	public static ArrayList<Persona> getDatosDeFichero(File fichero) throws FileNotFoundException, IOException{
 		ArrayList<Persona> directorio = new ArrayList<Persona>();
+		@SuppressWarnings("resource")
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichero));
 		Persona p = null;
 		try {
