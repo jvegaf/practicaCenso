@@ -65,10 +65,11 @@ public class CensoFrame extends JFrame {
 		mntmAbrirFichero = new JMenuItem("Abrir");
 		mntmAbrirFichero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File fichero = selectFichero();
-				if (fichero!= null) {
+				File fich = selectFichero();
+				if (fich!= null) {
 					try {
-						getData(fichero);
+						getData(fich);
+						fichero = fich;
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
