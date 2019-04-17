@@ -47,7 +47,7 @@ public class CensoFrame extends JFrame {
 	private JMenuItem mntmBorrar;
 	private JMenuItem mntmAbrirReciente;
 	private JMenuItem mntmSalir;
-	
+	private File fichero;
 
 	/**
 	 * Create the frame.
@@ -82,8 +82,14 @@ public class CensoFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(fichero == null) {
+					fichero = selectParaGuardar();
+				}
+				try {
+					dtm.guardaEnFichero(fichero);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -96,11 +102,10 @@ public class CensoFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				File fichero = selectParaGuardar();
+				fichero = selectParaGuardar();
 				try {
 					dtm.guardaEnFichero(fichero);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -208,6 +213,6 @@ public class CensoFrame extends JFrame {
 	}
 	
 	protected void getData(File fichero) throws IOException {		
-		dtm.getData(fichero);
+		dtm.getDataDeFichero(fichero);
 	}
 }
