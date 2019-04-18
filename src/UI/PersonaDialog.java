@@ -4,17 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import model.DirectorioTableModel;
-import model.TipoOpcion;
 import model.Persona;
-import javax.swing.JButton;
+import model.TipoOpcion;
 
 public class PersonaDialog extends JDialog {
 	/**
@@ -96,7 +101,7 @@ public class PersonaDialog extends JDialog {
 				textFieldCPostal.setColumns(10);
 			}
 			{
-				JLabel lblPoblacin = new JLabel("Población");
+				JLabel lblPoblacin = new JLabel("Poblacion");
 				lblPoblacin.setHorizontalAlignment(SwingConstants.RIGHT);
 				panel.add(lblPoblacin);
 			}
@@ -141,7 +146,7 @@ public class PersonaDialog extends JDialog {
 				case AGREGAR:
 					textFieldCodigo.setEnabled(false);
 					break;
-			}
+			}	
 		}
 	}
 	
@@ -160,6 +165,20 @@ public class PersonaDialog extends JDialog {
 		textFieldNombre.setText("");
 		textFieldPoblacion.setText("");
 		textFieldProvincia.setText("");
+	}
+
+	@Override
+	protected JRootPane createRootPane() {
+		KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		JRootPane pane = new JRootPane();
+		pane.registerKeyboardAction(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				agregarPersona();
+			}
+		}, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+		return pane;
 	}
 
 	public void showPersona(Persona p) {
