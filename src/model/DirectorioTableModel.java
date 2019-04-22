@@ -23,6 +23,7 @@ public class DirectorioTableModel extends AbstractTableModel{
 	private ArrayList<Persona> dir = new ArrayList<Persona>();
 	private String[] columns = { "Codigo", "Nombre", "Edad", "Direccion", "Codigo Postal", "Poblacion", "Provincia"}; 
 	private PersonaDialog pDialog;
+	private Persona pSelected;
 	
 	/**
 	 * getter 
@@ -191,6 +192,24 @@ public class DirectorioTableModel extends AbstractTableModel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Devuelve una persona determinada del directorio
+	 */
+	
+	public Persona getPersona(int i) {
+		pSelected = this.dir.get(i);
+		return pSelected;
+	}
+
+	public void modificaPersona(Persona pNueva) {
+		for(int i=0;i<this.dir.size();i++) {
+			if(pSelected == this.dir.get(i)) {
+				this.dir.set(i, pNueva);
+			}
+		}
+		this.fireTableDataChanged();
 	}
 	
 }

@@ -2,8 +2,11 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog.ModalityType;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -181,6 +184,20 @@ public class CensoFrame extends JFrame {
 		
 		tabla = new JTable(dtm);
 		tabla.setBorder(null);
+		tabla.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable table = (JTable)mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
+				int row = table.rowAtPoint(point);
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					PersonaDialog dialog = new PersonaDialog(dtm, TipoOpcion.MODIFICAR);
+					dialog.showPersona(dtm.getPersona(row));
+					dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+					dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				}
+			}
+		});
 		scrollPane = new JScrollPane(tabla);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 	}

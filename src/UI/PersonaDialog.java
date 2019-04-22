@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
@@ -137,7 +137,14 @@ public class PersonaDialog extends JDialog {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						agregarPersona();
+						switch (opcion) {
+						case AGREGAR:
+							agregarPersona();
+							break;
+						case MODIFICAR:
+							modificarPersona();
+							break;
+						}
 					}
 				});
 				panel.add(btnAceptar);
@@ -146,15 +153,35 @@ public class PersonaDialog extends JDialog {
 				case AGREGAR:
 					textFieldCodigo.setEnabled(false);
 					break;
+				case MODIFICAR:
+					textFieldCodigo.setEnabled(true);
+					break;
 			}	
 		}
 	}
 	
+
 	protected void agregarPersona() {
 		dtm.agregarPersona(textFieldNombre.getText(), Integer.valueOf(textFieldEdad.getText()), 
 				textFieldDireccion.getText(), textFieldCPostal.getText(), 
 				textFieldPoblacion.getText(), textFieldProvincia.getText());
 		/* dtm.fireTableDataChanged(); */
+		this.setVisible(false);
+	}
+
+	protected void modificarPersona() {
+		//muestra dialogo de confirmacion
+		int result = JOptionPane.showConfirmDialog(null, "¿Quiere realizar los cambios?", 
+				"Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		if(result == JOptionPane.YES_OPTION) {
+			this.dtm.modificaPersona(new Persona(Integer.valueOf(textFieldCodigo.getText()), 
+					textFieldNombre.getText(),
+					Integer.valueOf(textFieldEdad.getText()),
+					textFieldDireccion.getText(), 
+					textFieldCPostal.getText(), 
+					textFieldPoblacion.getText(), 
+					textFieldProvincia.getText()));
+		}
 		this.setVisible(false);
 	}
 
